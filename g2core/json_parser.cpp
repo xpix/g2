@@ -611,10 +611,20 @@ void json_print_response(uint8_t status)
 /*
  * json_set_jv()
  */
+#pragma GCC push_options
+#pragma GCC optimize ("O0")
 
 stat_t json_set_jv(nvObj_t *nv)
-{
-    if ((uint8_t)nv->value >= JV_MAX_VALUE) { return (STAT_INPUT_EXCEEDS_MAX_VALUE);}
+{    
+//    uint8_t value = (uint8_t)nv->value;
+//    if (value >= JV_MAX_VALUE) { return (STAT_INPUT_EXCEEDS_MAX_VALUE);} 
+//    if ((uint8_t)nv->value >= JV_MAX_VALUE) { return (STAT_INPUT_EXCEEDS_MAX_VALUE);}
+
+    if ((nv->value >= JV_MAX_VALUE) || (nv->value < 0)) { 
+        nv->valuetype = TYPE_NULL;
+        return (STAT_INPUT_VALUE_RANGE_ERROR);
+    }
+
     js.json_verbosity = (jsonVerbosity)nv->value;
 
     js.echo_json_footer = false;
@@ -636,6 +646,7 @@ stat_t json_set_jv(nvObj_t *nv)
     }
     return(STAT_OK);
 }
+#pragma GCC reset_options
 
 /*
  * json_set_ej() - set JSON communications mode
