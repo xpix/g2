@@ -991,6 +991,17 @@ stat_t st_set_me(nvObj_t *nv)    // Make sure this function is not part of initi
 
 stat_t st_set_md(nvObj_t *nv)    // Make sure this function is not part of initialization --> f00
 {
+//    check_range(nv->value, 0, MOTORS);    // returns with error if outside range
+
+    if (nv->value < 0) { 
+        nv->valuetype = TYPE_NULL;
+        return (STAT_INPUT_LESS_THAN_MIN_VALUE); 
+    }
+    if (nv->value > MOTORS) { 
+        nv->valuetype = TYPE_NULL;
+        return (STAT_INPUT_EXCEEDS_MAX_VALUE); 
+    }
+
     // de-energize all motors
     if ((uint8_t)nv->value == 0) {      // 0 means all motors
         for (uint8_t motor = MOTOR_1; motor < MOTORS; motor++) {

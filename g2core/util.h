@@ -69,6 +69,12 @@ inline void _debug_trap(const char *reason) {
 }
 #pragma GCC reset_options
 
+//*** common tests ***
+
+#define force_range(v,n,x) if (v<n) {v=n;} else if (v>x) {v=x;}
+//constexpr int32_t force_range(int32_t v, int32_t n, int32_t x) { if (v<n) {v=n;} else if (v>x) {v=x;}; return v;}
+//constexpr float force_range(float v, float n, float x) { if (v<n) {v=n;} else if (v>x) {v=x;}; return v;}
+
 //*** vector utilities ***
 
 extern float vector[AXES]; // vector of axes for passing to subroutines
@@ -88,9 +94,6 @@ float min4(float x1, float x2, float x3, float x4);
 float max3(float x1, float x2, float x3);
 float max4(float x1, float x2, float x3, float x4);
 //float std_dev(float a[], uint8_t n, float *mean);
-
-//#define FORCE_RANGE(v,n,x) if (v<n) {v=n;} else if (v>x) {v=x;}
-constexpr int32_t force_range(int32_t v, int32_t n, int32_t x) { if (v<n) {v=n;} else if (v>x) {v=x;}; return v;}
 
 //*** string utilities ***
 
