@@ -235,7 +235,7 @@ stat_t hw_get_fbc(nvObj_t *nv)
 
 stat_t hw_get_id(nvObj_t *nv)
 {
-	char tmp[SYS_ID_LEN];
+	char tmp[SYS_ID_LEN+1];
 	_get_id(tmp);
 	nv->valuetype = TYPE_STRING;
 	ritorno(nv_copy_string(nv, tmp));
