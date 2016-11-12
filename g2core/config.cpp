@@ -250,7 +250,11 @@ stat_t get_flt(nvObj_t *nv)
  *  set_flt()  - set value as float
  */
 //stat_t set_nul(nvObj_t *nv) { return (STAT_PARAMETER_IS_READ_ONLY); }
-stat_t set_nul(nvObj_t *nv) { return (STAT_OK); }   // hack until JSON is refactored
+stat_t set_nul(nvObj_t *nv)    // hack until JSON is refactored
+{ 
+    nv->valuetype = TYPE_NULL;
+    return (STAT_PARAMETER_IS_READ_ONLY); 
+}
 
 stat_t set_ui8(nvObj_t *nv)
 {

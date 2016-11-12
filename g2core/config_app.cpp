@@ -107,7 +107,7 @@ const cfgItem_t cfgArray[] = {
     { "sys", "fbs",_fn,  2, hw_print_fbs,hw_get_fbs,set_nul,  (float *)&cs.null, 0 },
     { "sys", "fbc",_fn,  2, hw_print_fbc,hw_get_fbc,set_nul,  (float *)&cs.null, 0 },
     { "sys", "fv", _fipn,2, hw_print_fv, get_flt,   set_nul,  (float *)&cs.fw_version,  G2CORE_FIRMWARE_VERSION },
-    { "sys", "hp", _fipn,0, hw_print_hp, get_flt,   set_flt,  (float *)&cs.hw_platform, G2CORE_HARDWARE_PLATFORM },
+    { "sys", "hp", _fipn,0, hw_print_hp, get_flt,   set_nul,  (float *)&cs.hw_platform, G2CORE_HARDWARE_PLATFORM },
     { "sys", "hv", _fipn,0, hw_print_hv, get_flt,   hw_set_hv,(float *)&cs.hw_version,  G2CORE_HARDWARE_VERSION },
     { "sys", "id", _fn,  0, hw_print_id, hw_get_id, set_nul,  (float *)&cs.null, 0 },   // device ID (ASCII signature)
 

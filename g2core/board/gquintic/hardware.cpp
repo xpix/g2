@@ -153,6 +153,7 @@ stat_t hw_flash(nvObj_t *nv)
  */
 stat_t hw_set_hv(nvObj_t *nv)
 {
+    cs.hw_version = trunc(nv->value);
     return (STAT_OK);
 }
 
