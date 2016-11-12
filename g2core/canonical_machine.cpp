@@ -2360,6 +2360,10 @@ stat_t cm_set_jh(nvObj_t *nv)
     return(STAT_OK);
 }
 
+/*
+ * cm_set_jt() - set junction integration time
+ */
+
 stat_t cm_set_jt(nvObj_t *nv)
 {
 //    // Prescale it. 
@@ -2381,8 +2385,23 @@ stat_t cm_set_jt(nvObj_t *nv)
     for (uint8_t axis=0; axis<AXES; axis++) {
         _cm_recalc_max_junction_accel(axis);
     }
-
     return(status);
+}
+
+/*
+ * cm_set_ct() - set chordal tolerance
+ */
+
+stat_t cm_set_ct(nvObj_t *nv)
+{
+    if (cm_get_units_mode(MODEL) == INCHES) {   // if in inches...
+        nv->value *= MM_PER_INCH;               // convert to millimeter units
+    }
+    if (nv->value < CHORDAL_TOLERANCE_MIN) {
+        nv->valuetype = TYPE_NULL;
+        return(STAT_INPUT_LESS_THAN_MIN_VALUE);
+    }
+    return(set_flt(nv));
 }
 
 /*

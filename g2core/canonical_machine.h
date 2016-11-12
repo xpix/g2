@@ -768,11 +768,13 @@ stat_t cm_get_am(nvObj_t *nv);          // get axis mode
 stat_t cm_set_am(nvObj_t *nv);          // set axis mode
 stat_t cm_set_hi(nvObj_t *nv);          // set homing input
 
-stat_t cm_set_jt(nvObj_t *nv);          // set junction integration time constant
 stat_t cm_set_vm(nvObj_t *nv);          // set velocity max and reciprocal
 stat_t cm_set_fr(nvObj_t *nv);          // set feedrate max and reciprocal
 stat_t cm_set_jm(nvObj_t *nv);          // set jerk max with 1,000,000 correction
 stat_t cm_set_jh(nvObj_t *nv);          // set jerk high with 1,000,000 correction
+
+stat_t cm_set_jt(nvObj_t *nv);          // set junction integration time constant
+stat_t cm_set_ct(nvObj_t *nv);          // set chordal tolerance
 
 stat_t cm_set_mfo(nvObj_t *nv);         // set manual feedrate override factor
 stat_t cm_set_mto(nvObj_t *nv);         // set manual traverse override factor
