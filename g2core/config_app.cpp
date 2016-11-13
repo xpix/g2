@@ -822,34 +822,40 @@ const cfgItem_t cfgArray[] = {
 
     // Group lookups - must follow the single-valued entries for proper sub-string matching
     // *** Must agree with NV_COUNT_GROUPS below ***
-    // *** START COUNTING FROM HERE ***
-    // *** Do not count:
-    //      - Optional motors (5 and 6)
-    //      - Optional USER_DATA
-    //      - Optional DIAGNOSTIC_PARAMETERS
-    //      - Uber groups (count these separately)
+    // *** Make sure these are accurate, and add any new ones to NV_COUNT_GROUPS ***
+    // *** Uber groups are counted separately ***
 
+#define FIXED_GROUPS    2
     { "","sys",_f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // system group
     { "","p1", _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // PWM 1 group
-    // 2
-    { "","1",  _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // motor groups
-    { "","2",  _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
-    { "","3",  _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
-    { "","4",  _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
-#if (MOTORS >= 5)
-    { "","5",  _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
-#endif
-#if (MOTORS >= 6)
-    { "","6",  _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
-#endif
-    // +4 = 6
+
+// axis group count is provided by AXES
     { "","x",  _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // axis groups
     { "","y",  _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
     { "","z",  _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
     { "","a",  _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
     { "","b",  _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
     { "","c",  _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
-    // +6 = 12
+
+// motor group count is provided by MOTORS
+    { "","1",  _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // motor groups
+#if (MOTORS >= 2)
+    { "","2",  _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
+#endif
+#if (MOTORS >= 3)
+    { "","3",  _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
+#endif
+#if (MOTORS >= 4)
+    { "","4",  _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
+#endif
+#if (MOTORS >= 5)
+    { "","5",  _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
+#endif
+#if (MOTORS >= 6)
+    { "","6",  _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
+#endif
+
+#define DIGITAL_IN_GROUPS 10
     { "","in",  _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },   // input state
     { "","di1", _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },   // input configs
     { "","di2", _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
@@ -860,7 +866,8 @@ const cfgItem_t cfgArray[] = {
     { "","di7", _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
     { "","di8", _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
     { "","di9", _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
-    // +10 = 22
+
+#define DIGITAL_OUT_GROUPS 14
     { "","out", _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },   // output state
     { "","do1", _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },   // output configs
     { "","do2", _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
@@ -875,7 +882,8 @@ const cfgItem_t cfgArray[] = {
     { "","do11", _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
     { "","do12", _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
     { "","do13", _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
-    // +14 = 36
+
+#define COORDINATE_OFFSET_GROUPS 9
     { "","g54",_f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // coord offset groups
     { "","g55",_f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
     { "","g56",_f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },
@@ -885,7 +893,8 @@ const cfgItem_t cfgArray[] = {
     { "","g92",_f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // origin offsets
     { "","g28",_f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // g28 home position
     { "","g30",_f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // g30 home position
-    // +9 = 45
+
+#define MACHINE_STATE_GROUPS 8
     { "","mpo",_f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // machine position group
     { "","pos",_f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // work position group
     { "","ofs",_f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // work offset group
@@ -894,22 +903,27 @@ const cfgItem_t cfgArray[] = {
     { "","pwr",_f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // motor power readout group
     { "","jog",_f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // axis jogging state group
     { "","jid",_f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // job ID group
-    // +8 = 53
+
+#define TEMPERATURE_GROUPS 6
     { "","he1", _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // heater 1 group
     { "","he2", _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // heater 2 group
     { "","he3", _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // heater 3 group
     { "","pid1",_f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // PID 1 group
     { "","pid2",_f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // PID 2 group
     { "","pid3",_f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // PID 3 group
-    // +6 = 59
 
 #ifdef __USER_DATA
+#define USER_DATA_GROUPS 4
     { "","uda", _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // user data group
     { "","udb", _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // user data group
     { "","udc", _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // user data group
     { "","udd", _f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // user data group
+#else
+#define USER_DATA_GROUPS 0
 #endif
+
 #ifdef __DIAGNOSTIC_PARAMETERS
+#define DIAGNOSTIC_GROUPS 8
     { "","_te",_f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // target axis endpoint group
     { "","_tr",_f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // target axis runtime group
     { "","_ts",_f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // target motor steps group
@@ -918,8 +932,11 @@ const cfgItem_t cfgArray[] = {
     { "","_es",_f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // encoder steps group
     { "","_xs",_f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // correction steps group
     { "","_fe",_f0, 0, tx_print_nul, get_grp, set_grp,(float *)&cs.null,0 },  // following error group
+#else
+#define DIAGNOSTIC_GROUPS 0
 #endif
 
+#define NV_COUNT_UBER_GROUPS 6
     // Uber-group (groups of groups, for text-mode displays only)
     // *** Must agree with NV_COUNT_UBER_GROUPS below ****
     { "", "m", _f0, 0, tx_print_nul, _do_motors, set_nul,(float *)&cs.null,0 },
@@ -932,40 +949,21 @@ const cfgItem_t cfgArray[] = {
 
 /***** Make sure these defines line up with any changes in the above table *****/
 
-#define NV_COUNT_UBER_GROUPS    6     // count of uber-groups, above
-#define FIXED_GROUPS            59    // count of fixed groups, excluding optional groups
-
-#if (MOTORS >= 5)
-#define MOTOR_GROUP_5           1
-#else
-#define MOTOR_GROUP_5           0
-#endif
-
-#if (MOTORS >= 6)
-#define MOTOR_GROUP_6           1
-#else
-#define MOTOR_GROUP_6           0
-#endif
-
-#ifdef __USER_DATA
-#define USER_DATA_GROUPS        4    // count of user data groups only
-#else
-#define USER_DATA_GROUPS        0
-#endif
-
-#ifdef __DIAGNOSTIC_PARAMETERS
-#define DIAGNOSTIC_GROUPS       8    // count of diagnostic groups only
-#else
-#define DIAGNOSTIC_GROUPS       0
-#endif
-
-#define TEMPERATURE_GROUPS      6
-#define NV_COUNT_GROUPS (FIXED_GROUPS + MOTOR_GROUP_5 + MOTOR_GROUP_6 + USER_DATA_GROUPS + DIAGNOSTIC_GROUPS + TEMPERATURE_GROUPS)
+#define NV_COUNT_GROUPS (FIXED_GROUPS \
+                         + AXES \
+                         + MOTORS \
+                         + DIGITAL_IN_GROUPS \
+                         + DIGITAL_OUT_GROUPS \
+                         + COORDINATE_OFFSET_GROUPS \
+                         + MACHINE_STATE_GROUPS \
+                         + TEMPERATURE_GROUPS \
+                         + USER_DATA_GROUPS \
+                         + DIAGNOSTIC_GROUPS)
 
 /* <DO NOT MESS WITH THESE DEFINES> */
 #define NV_INDEX_MAX (sizeof(cfgArray) / sizeof(cfgItem_t))
 #define NV_INDEX_END_SINGLES    (NV_INDEX_MAX - NV_COUNT_UBER_GROUPS - NV_COUNT_GROUPS - NV_STATUS_REPORT_LEN)
-#define NV_INDEX_START_GROUPS    (NV_INDEX_MAX - NV_COUNT_UBER_GROUPS - NV_COUNT_GROUPS)
+#define NV_INDEX_START_GROUPS   (NV_INDEX_MAX - NV_COUNT_UBER_GROUPS - NV_COUNT_GROUPS)
 #define NV_INDEX_START_UBER_GROUPS (NV_INDEX_MAX - NV_COUNT_UBER_GROUPS)
 /* </DO NOT MESS WITH THESE DEFINES> */
 
