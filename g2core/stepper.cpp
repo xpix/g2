@@ -760,6 +760,7 @@ void st_prep_dwell(float microseconds)
  * (only usable while exec isn't running, e.g. in feedhold or stopped states...)
  * add a dwell to the loader without going through the planner buffers
  */
+
 void st_request_out_of_band_dwell(float microseconds)
 {
     st_prep_dwell(microseconds);
@@ -770,12 +771,14 @@ void st_request_out_of_band_dwell(float microseconds)
 /*
  * _set_hw_microsteps() - set microsteps in hardware
  */
+
 static void _set_hw_microsteps(const uint8_t motor, const uint8_t microsteps)
 {
-    if (motor >= MOTORS) {return;}
-
-    Motors[motor]->setMicrosteps(microsteps);
+    if (motor >= MOTORS) {
+        return;
     }
+    Motors[motor]->setMicrosteps(microsteps);
+}
 
 
 /***********************************************************************************
@@ -861,6 +864,10 @@ stat_t st_set_tr(nvObj_t *nv)            // motor travel per revolution
 
 stat_t st_set_mi(nvObj_t *nv)            // motor microsteps
 {
+    if (nv->value <= 0) {
+        nv->valuetype = TYPE_NULL;
+        return (STAT_INPUT_LESS_THAN_MIN_VALUE);
+    }
     uint8_t mi = (uint8_t)nv->value;
 
     if ((mi != 1) && (mi != 2) && (mi != 4) && (mi != 8) && (mi != 16) && (mi != 32)) {
