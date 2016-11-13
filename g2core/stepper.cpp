@@ -839,6 +839,10 @@ stat_t st_set_ma(nvObj_t *nv)            // motor map to axis
 
 stat_t st_set_sa(nvObj_t *nv)            // motor step angle
 {
+    if (nv->value <= 0) {
+        nv->valuetype = TYPE_NULL;
+        return (STAT_INPUT_LESS_THAN_MIN_VALUE);
+    }
     set_flt(nv);
     _set_motor_steps_per_unit(nv);
     return(STAT_OK);
@@ -846,6 +850,10 @@ stat_t st_set_sa(nvObj_t *nv)            // motor step angle
 
 stat_t st_set_tr(nvObj_t *nv)            // motor travel per revolution
 {
+    if (nv->value <= 0) {
+        nv->valuetype = TYPE_NULL;
+        return (STAT_INPUT_LESS_THAN_MIN_VALUE);
+    }
     set_flu(nv);
     _set_motor_steps_per_unit(nv);
     return(STAT_OK);
