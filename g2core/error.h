@@ -193,6 +193,14 @@ char *get_status_message(stat_t status);
 #define STAT_PARAMETER_CANNOT_BE_READ 105       // input error: parameter cannot be returned
 #define STAT_COMMAND_NOT_ACCEPTED 106           // input error: command cannot be accepted at this time
 #define STAT_INPUT_EXCEEDS_MAX_LENGTH 107       // input error: input string is too long
+
+// Rules for consistency in error reporting:
+//  STAT_INPUT_LESS_THAN_MIN_VALUE for errors when value must be positive and non-zero
+//  STAT_INPUT_LESS_THAN_MIN_VALUE for errors when value must be positive or zero
+//  STAT_INPUT_EXCEEDS_MAX_VALUE for errors when value must be negative and non-zero zero
+//  STAT_INPUT_EXCEEDS_MAX_VALUE for errors when value must be negative or zero
+//  STAT_INPUT_VALUE_RANGE_ERROR for errors when value must fall within a range
+
 #define STAT_INPUT_LESS_THAN_MIN_VALUE 108      // input error: value is under minimum
 #define STAT_INPUT_EXCEEDS_MAX_VALUE 109        // input error: value is over maximum
 #define STAT_INPUT_VALUE_RANGE_ERROR 110        // input error: value is out-of-range

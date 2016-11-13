@@ -893,7 +893,6 @@ stat_t st_set_su(nvObj_t *nv)			// set motor steps per unit (direct)
         _set_motor_steps_per_unit(nv);
         return(STAT_OK);
     }
-    
     set_flt(nv);
     st_cfg.mot[m].units_per_step = 1.0/st_cfg.mot[m].steps_per_unit;
     // Scale TR so all the other values make sense
@@ -905,8 +904,10 @@ stat_t st_set_su(nvObj_t *nv)			// set motor steps per unit (direct)
 
 stat_t st_set_ep(nvObj_t *nv)            // set motor enable polarity
 {
-    if (nv->value > ACTIVE_LOW) { return (STAT_INPUT_EXCEEDS_MAX_VALUE); }
-
+    if ((nv->value < ACTIVE_HIGH) || (nv->value > ACTIVE_LOW)) {
+        nv->valuetype = TYPE_NULL;
+        return (STAT_INPUT_VALUE_RANGE_ERROR);
+    }
     uint8_t motor = _get_motor(nv->index);
     if (motor > MOTORS) { return STAT_INPUT_VALUE_RANGE_ERROR; };
 
@@ -916,8 +917,10 @@ stat_t st_set_ep(nvObj_t *nv)            // set motor enable polarity
 
 stat_t st_get_ep(nvObj_t *nv)            // get motor enable polarity
 {
-    if (nv->value > ACTIVE_LOW) { return (STAT_INPUT_EXCEEDS_MAX_VALUE); }
-
+    if ((nv->value < ACTIVE_HIGH) || (nv->value > ACTIVE_LOW)) {
+        nv->valuetype = TYPE_NULL;
+        return (STAT_INPUT_VALUE_RANGE_ERROR);
+    }
     uint8_t motor = _get_motor(nv->index);
     if (motor > MOTORS) { return STAT_INPUT_VALUE_RANGE_ERROR; };
 
@@ -928,8 +931,10 @@ stat_t st_get_ep(nvObj_t *nv)            // get motor enable polarity
 
 stat_t st_set_pm(nvObj_t *nv)            // set motor power mode
 {
-    if (nv->value >= MOTOR_POWER_MODE_MAX_VALUE) { return (STAT_INPUT_EXCEEDS_MAX_VALUE); }
-
+    if ((nv->value < 0) || (nv->value >= MOTOR_POWER_MODE_MAX_VALUE)) { 
+        nv->valuetype = TYPE_NULL;
+        return (STAT_INPUT_VALUE_RANGE_ERROR);
+    }
     uint8_t motor = _get_motor(nv->index);
     if (motor > MOTORS) { return STAT_INPUT_VALUE_RANGE_ERROR; };
 
@@ -941,8 +946,10 @@ stat_t st_set_pm(nvObj_t *nv)            // set motor power mode
 
 stat_t st_get_pm(nvObj_t *nv)            // get motor power mode
 {
-    if (nv->value >= MOTOR_POWER_MODE_MAX_VALUE) { return (STAT_INPUT_EXCEEDS_MAX_VALUE); }
-
+    if ((nv->value < 0) || (nv->value >= MOTOR_POWER_MODE_MAX_VALUE)) { 
+        nv->valuetype = TYPE_NULL;
+        return (STAT_INPUT_VALUE_RANGE_ERROR);
+    }
     uint8_t motor = _get_motor(nv->index);
     if (motor > MOTORS) { return STAT_INPUT_VALUE_RANGE_ERROR; };
 
@@ -961,6 +968,7 @@ stat_t st_get_pm(nvObj_t *nv)            // get motor power mode
 stat_t st_set_pl(nvObj_t *nv)    // motor power level
 {
     if ((nv->value < (float)0.0) || (nv->value > (float)1.0)) {
+        nv->valuetype = TYPE_NULL;
         return (STAT_INPUT_VALUE_RANGE_ERROR);
     }
     set_flt(nv);    // set power_setting value in the motor config struct (st)
@@ -984,8 +992,10 @@ stat_t st_get_pwr(nvObj_t *nv)
 {
     // this is kind of a hack to extract the motor number from the table
     uint8_t motor = (cfgArray[nv->index].token[3] & 0x0F) - 1;
-    if (motor > MOTORS) { return STAT_INPUT_VALUE_RANGE_ERROR; };
-
+    if ((motor < 0) || (motor > MOTORS)) { 
+        nv->valuetype = TYPE_NULL;
+        return STAT_INPUT_VALUE_RANGE_ERROR; 
+    }
     nv->value = Motors[motor]->getCurrentPowerLevel(motor);
 	nv->valuetype = TYPE_FLOAT;
     nv->precision = cfgArray[nv->index].precision;
@@ -1005,7 +1015,10 @@ stat_t st_get_pwr(nvObj_t *nv)
 
 stat_t st_set_mt(nvObj_t *nv)
 {
-    force_range(nv->value, MOTOR_TIMEOUT_SECONDS_MIN, MOTOR_TIMEOUT_SECONDS_MAX);
+    if ((nv->value < MOTOR_TIMEOUT_SECONDS_MIN) || (nv->value > MOTOR_TIMEOUT_SECONDS_MAX)) {
+        nv->valuetype = TYPE_NULL;
+        return (STAT_INPUT_VALUE_RANGE_ERROR);
+    }
     st_cfg.motor_power_timeout = nv->value;
  	nv->valuetype = TYPE_FLOAT;
  	nv->precision = cfgArray[nv->index].precision;
@@ -1022,17 +1035,10 @@ stat_t st_set_me(nvObj_t *nv)    // Make sure this function is not part of initi
 
 stat_t st_set_md(nvObj_t *nv)    // Make sure this function is not part of initialization --> f00
 {
-//    check_range(nv->value, 0, MOTORS);    // returns with error if outside range
-
-    if (nv->value < 0) { 
+    if ((nv->value < 0) || (nv->value > MOTORS)) {
         nv->valuetype = TYPE_NULL;
-        return (STAT_INPUT_LESS_THAN_MIN_VALUE); 
+        return (STAT_INPUT_VALUE_RANGE_ERROR);
     }
-    if (nv->value > MOTORS) { 
-        nv->valuetype = TYPE_NULL;
-        return (STAT_INPUT_EXCEEDS_MAX_VALUE); 
-    }
-
     // de-energize all motors
     if ((uint8_t)nv->value == 0) {      // 0 means all motors
         for (uint8_t motor = MOTOR_1; motor < MOTORS; motor++) {
