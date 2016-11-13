@@ -120,9 +120,11 @@ stat_t mp_plan_move()
     if (block->exit_velocity > block->cruise_velocity)  {
         __asm__("BKPT"); // exit > cruise after calculate_block
     }
-    if (block->head_length < 0.00001 && block->body_length < 0.00001 && block->tail_length < 0.00001)  {
-        __asm__("BKPT"); // zero or negative length block
-    }
+    
+// Enable this trap to find very short moves that sometimes slip though as "tails" on arcs and other cases
+//    if (block->head_length < 0.00001 && block->body_length < 0.00001 && block->tail_length < 0.00001)  {
+//        __asm__("BKPT"); // zero or negative length block
+//    }
 
     bf->buffer_state = MP_BUFFER_PLANNED;
     bf->plannable = false;
