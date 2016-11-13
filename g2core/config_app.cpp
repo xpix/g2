@@ -196,7 +196,7 @@ const cfgItem_t cfgArray[] = {
 #endif
 
     // Motor parameters
-    { "1","1ma",_fip, 0, st_print_ma, get_ui8, set_ui8,     (float *)&st_cfg.mot[MOTOR_1].motor_map,      M1_MOTOR_MAP },
+    { "1","1ma",_fip, 0, st_print_ma, get_ui8, st_set_ma,   (float *)&st_cfg.mot[MOTOR_1].motor_map,      M1_MOTOR_MAP },
     { "1","1sa",_fip, 3, st_print_sa, get_flt, st_set_sa,   (float *)&st_cfg.mot[MOTOR_1].step_angle,     M1_STEP_ANGLE },
     { "1","1tr",_fipc,4, st_print_tr, get_flt, st_set_tr,   (float *)&st_cfg.mot[MOTOR_1].travel_rev,     M1_TRAVEL_PER_REV },
     { "1","1mi",_fip, 0, st_print_mi, get_ui8, st_set_mi,   (float *)&st_cfg.mot[MOTOR_1].microsteps,     M1_MICROSTEPS },
@@ -208,7 +208,7 @@ const cfgItem_t cfgArray[] = {
 //  { "1","1pi",_fip, 3, st_print_pi, get_flt, st_set_pi,   (float *)&st_cfg.mot[MOTOR_1].power_idle,     M1_POWER_IDLE },
 //  { "1","1mt",_fip, 2, st_print_mt, get_flt, st_set_mt,   (float *)&st_cfg.mot[MOTOR_1].motor_timeout,  M1_MOTOR_TIMEOUT },
 #if (MOTORS >= 2)
-    { "2","2ma",_fip, 0, st_print_ma, get_ui8, set_ui8,     (float *)&st_cfg.mot[MOTOR_2].motor_map,      M2_MOTOR_MAP },
+    { "2","2ma",_fip, 0, st_print_ma, get_ui8, st_set_ma,   (float *)&st_cfg.mot[MOTOR_2].motor_map,      M2_MOTOR_MAP },
     { "2","2sa",_fip, 3, st_print_sa, get_flt, st_set_sa,   (float *)&st_cfg.mot[MOTOR_2].step_angle,     M2_STEP_ANGLE },
     { "2","2tr",_fipc,4, st_print_tr, get_flt, st_set_tr,   (float *)&st_cfg.mot[MOTOR_2].travel_rev,     M2_TRAVEL_PER_REV },
     { "2","2mi",_fip, 0, st_print_mi, get_ui8, st_set_mi,   (float *)&st_cfg.mot[MOTOR_2].microsteps,     M2_MICROSTEPS },
@@ -221,7 +221,7 @@ const cfgItem_t cfgArray[] = {
 //  { "2","2mt",_fip, 2, st_print_mt, get_flt, st_set_mt,   (float *)&st_cfg.mot[MOTOR_2].motor_timeout,  M2_MOTOR_TIMEOUT },
 #endif
 #if (MOTORS >= 3)
-    { "3","3ma",_fip, 0, st_print_ma, get_ui8, set_ui8,     (float *)&st_cfg.mot[MOTOR_3].motor_map,      M3_MOTOR_MAP },
+    { "3","3ma",_fip, 0, st_print_ma, get_ui8, st_set_ma,   (float *)&st_cfg.mot[MOTOR_3].motor_map,      M3_MOTOR_MAP },
     { "3","3sa",_fip, 3, st_print_sa, get_flt, st_set_sa,   (float *)&st_cfg.mot[MOTOR_3].step_angle,     M3_STEP_ANGLE },
     { "3","3tr",_fipc,4, st_print_tr, get_flt, st_set_tr,   (float *)&st_cfg.mot[MOTOR_3].travel_rev,     M3_TRAVEL_PER_REV },
     { "3","3mi",_fip, 0, st_print_mi, get_ui8, st_set_mi,   (float *)&st_cfg.mot[MOTOR_3].microsteps,     M3_MICROSTEPS },
@@ -234,7 +234,7 @@ const cfgItem_t cfgArray[] = {
 //  { "3","3mt",_fip, 2, st_print_mt, get_flt, st_set_mt,   (float *)&st_cfg.mot[MOTOR_3].motor_timeout,  M3_MOTOR_TIMEOUT },
 #endif
 #if (MOTORS >= 4)
-    { "4","4ma",_fip, 0, st_print_ma, get_ui8, set_ui8,     (float *)&st_cfg.mot[MOTOR_4].motor_map,      M4_MOTOR_MAP },
+    { "4","4ma",_fip, 0, st_print_ma, get_ui8, st_set_ma,   (float *)&st_cfg.mot[MOTOR_4].motor_map,      M4_MOTOR_MAP },
     { "4","4sa",_fip, 3, st_print_sa, get_flt, st_set_sa,   (float *)&st_cfg.mot[MOTOR_4].step_angle,     M4_STEP_ANGLE },
     { "4","4tr",_fipc,4, st_print_tr, get_flt, st_set_tr,   (float *)&st_cfg.mot[MOTOR_4].travel_rev,     M4_TRAVEL_PER_REV },
     { "4","4mi",_fip, 0, st_print_mi, get_ui8, st_set_mi,   (float *)&st_cfg.mot[MOTOR_4].microsteps,     M4_MICROSTEPS },
@@ -247,7 +247,7 @@ const cfgItem_t cfgArray[] = {
 //  { "4","4mt",_fip, 2, st_print_mt, get_flt, st_set_mt,   (float *)&st_cfg.mot[MOTOR_4].motor_timeout,  M4_MOTOR_TIMEOUT },
 #endif
 #if (MOTORS >= 5)
-    { "5","5ma",_fip, 0, st_print_ma, get_ui8, set_ui8,     (float *)&st_cfg.mot[MOTOR_5].motor_map,      M5_MOTOR_MAP },
+    { "5","5ma",_fip, 0, st_print_ma, get_ui8, st_set_ma,   (float *)&st_cfg.mot[MOTOR_5].motor_map,      M5_MOTOR_MAP },
     { "5","5sa",_fip, 3, st_print_sa, get_flt, st_set_sa,   (float *)&st_cfg.mot[MOTOR_5].step_angle,     M5_STEP_ANGLE },
     { "5","5tr",_fipc,4, st_print_tr, get_flt, st_set_tr,   (float *)&st_cfg.mot[MOTOR_5].travel_rev,     M5_TRAVEL_PER_REV },
     { "5","5mi",_fip, 0, st_print_mi, get_ui8, st_set_mi,   (float *)&st_cfg.mot[MOTOR_5].microsteps,     M5_MICROSTEPS },
@@ -260,7 +260,7 @@ const cfgItem_t cfgArray[] = {
 //  { "5","5mt",_fip, 2, st_print_mt, get_flt, st_set_mt,   (float *)&st_cfg.mot[MOTOR_5].motor_timeout,  M5_MOTOR_TIMEOUT },
 #endif
 #if (MOTORS >= 6)
-    { "6","6ma",_fip, 0, st_print_ma, get_ui8, set_ui8,     (float *)&st_cfg.mot[MOTOR_6].motor_map,      M6_MOTOR_MAP },
+    { "6","6ma",_fip, 0, st_print_ma, get_ui8, st_set_ma,   (float *)&st_cfg.mot[MOTOR_6].motor_map,      M6_MOTOR_MAP },
     { "6","6sa",_fip, 3, st_print_sa, get_flt, st_set_sa,   (float *)&st_cfg.mot[MOTOR_6].step_angle,     M6_STEP_ANGLE },
     { "6","6tr",_fipc,4, st_print_tr, get_flt, st_set_tr,   (float *)&st_cfg.mot[MOTOR_6].travel_rev,     M6_TRAVEL_PER_REV },
     { "6","6mi",_fip, 0, st_print_mi, get_ui8, st_set_mi,   (float *)&st_cfg.mot[MOTOR_6].microsteps,     M6_MICROSTEPS },

@@ -812,14 +812,30 @@ static void _set_motor_steps_per_unit(nvObj_t *nv)
     st_cfg.mot[m].steps_per_unit = 1/st_cfg.mot[m].units_per_step;
 }
 
-/* PER-MOTOR FUNCTIONS
+/* MOTOR CONFIGURATION FUNCTIONS
+ * st_set_ma() - set motor map to axis
  * st_set_sa() - set motor step angle
  * st_set_tr() - set travel per motor revolution
  * st_set_mi() - set motor microsteps
+ * st_set_su() - set motor steps per unit (direct)
+ *
+ * st_set_ep() - set motor enable polarity
+ * st_get_ep() - get motor enable polarity
+ *
  * st_set_pm() - set motor power mode
  * st_get_pm() - get motor power mode
  * st_set_pl() - set motor power level
  */
+
+stat_t st_set_ma(nvObj_t *nv)            // motor map to axis
+{
+    if ((nv->value < 0) || (nv->value > AXES)) {
+        nv->valuetype = TYPE_NULL;
+        return (STAT_INPUT_VALUE_RANGE_ERROR);
+    }
+    set_ui8(nv);
+    return (STAT_OK);
+}
 
 stat_t st_set_sa(nvObj_t *nv)            // motor step angle
 {
@@ -848,7 +864,7 @@ stat_t st_set_mi(nvObj_t *nv)            // motor microsteps
     return (STAT_OK);
 }
 
-stat_t st_set_su(nvObj_t *nv)			// motor steps per unit (direct)
+stat_t st_set_su(nvObj_t *nv)			// set motor steps per unit (direct)
 {
     uint8_t m = _get_motor(nv->index);
     // Do the unit conversion here (rather than using set_flu) because it's a reciprocal value

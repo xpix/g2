@@ -2258,9 +2258,15 @@ stat_t cm_get_am(nvObj_t *nv)
 stat_t cm_set_am(nvObj_t *nv)        // axis mode
 {
     if (_get_axis_type(nv->index) == 0) {    // linear
-        if (nv->value > AXIS_MODE_MAX_LINEAR) { return (STAT_INPUT_VALUE_RANGE_ERROR);}
+        if (nv->value > AXIS_MODE_MAX_LINEAR) { 
+            nv->valuetype = TYPE_NULL;
+            return (STAT_INPUT_VALUE_RANGE_ERROR);
+        }
     } else {
-        if (nv->value > AXIS_MODE_MAX_ROTARY) { return (STAT_INPUT_VALUE_RANGE_ERROR);}
+        if (nv->value > AXIS_MODE_MAX_ROTARY) { 
+            nv->valuetype = TYPE_NULL;
+            return (STAT_INPUT_VALUE_RANGE_ERROR);
+        }
     }
     set_ui8(nv);
     return(STAT_OK);
@@ -2347,7 +2353,10 @@ stat_t cm_set_fr(nvObj_t *nv)
 
 stat_t cm_set_jm(nvObj_t *nv)
 {
-//    if (nv->value > JERK_MULTIPLIER) nv->value /= JERK_MULTIPLIER;
+    // scale down very large jerk values to allow jerk to be entered in millions
+    if (nv->value > JERK_MULTIPLIER) {
+        nv->value /= JERK_MULTIPLIER;
+    }
     set_flu(nv);
     cm_set_axis_jerk(_get_axis(nv->index), nv->value);
     return(STAT_OK);
@@ -2355,7 +2364,10 @@ stat_t cm_set_jm(nvObj_t *nv)
 
 stat_t cm_set_jh(nvObj_t *nv)
 {
-//    if (nv->value > JERK_MULTIPLIER) nv->value /= JERK_MULTIPLIER;
+    // scale down very large jerk values to allow jerk to be entered in millions
+    if (nv->value > JERK_MULTIPLIER) {
+        nv->value /= JERK_MULTIPLIER;
+    }
     set_flu(nv);
     return(STAT_OK);
 }
