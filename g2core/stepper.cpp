@@ -787,7 +787,6 @@ static void _set_hw_microsteps(const uint8_t motor, const uint8_t microsteps)
  ***********************************************************************************/
 
 /* HELPERS */
-
 /*
  * st_axis_is_linear() - test if an axis or a motor mapped to an axis is linear or rotary
  *
@@ -860,6 +859,14 @@ stat_t st_set_tr(nvObj_t *nv)            // motor travel per revolution
     set_flu(nv);
     _set_motor_steps_per_unit(nv);
     return(STAT_OK);
+}
+
+stat_t st_get_tr(nvObj_t *nv)            // motor travel per revolution
+{
+    if ((st_axis_is_linear(nv)) && (cm_get_units_mode(MODEL) == INCHES)) {
+        nv->value *= MM_PER_INCH;
+    }
+    return (get_flt(nv));
 }
 
 stat_t st_set_mi(nvObj_t *nv)            // motor microsteps
