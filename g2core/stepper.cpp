@@ -789,6 +789,29 @@ static void _set_hw_microsteps(const uint8_t motor, const uint8_t microsteps)
 /* HELPERS */
 
 /*
+ * st_axis_is_linear() - test if an axis or a motor mapped to an axis is linear or rotary
+ *
+ *  Only requires nv->index to work
+ */
+
+uint8_t st_axis_is_linear(nvObj_t *nv)
+{
+    char c = cfgArray[nv->index].group[0];
+
+    if (isdigit(c)) {    // if it starts with a digit it's a motor - find its mapped axis
+        int8_t m = nv_get_integer_from_token(nv->index) -1; // get motor number
+        if (st_cfg.mot[m].motor_map <= AXIS_Z) { 
+            return (true); 
+        }
+    } else { // it's an axis. test it.
+        if (strchr("xyz", c) == NULL) { 
+            return (true); 
+        }
+    }
+    return (false);
+}
+
+/*
  * _set_motor_steps_per_unit() - what it says
  * This function will need to be rethought if microstep morphing is implemented
  */
@@ -866,20 +889,12 @@ stat_t st_set_mi(nvObj_t *nv)            // motor microsteps
 #pragma GCC push_options
 #pragma GCC optimize ("O0")
 
-uint8_t _axis_is_linear(const uint8_t motor)
-{
-    if (st_cfg.mot[motor].motor_map <= AXIS_Z) {
-        return (true);
-    }
-    return (false);
-}
-
 stat_t st_set_su(nvObj_t *nv)			// set motor steps per unit (direct)
 {
     int8_t m = nv_get_integer_from_token(nv->index) -1; // subtract 1 to make it an array offset
 
     // Do the unit conversion here (rather than using set_flu) because it's a reciprocal value
-    if ((_axis_is_linear(m)) && (cm_get_units_mode(MODEL) == INCHES)) {
+    if ((st_axis_is_linear(nv)) && (cm_get_units_mode(MODEL) == INCHES)) {
         nv->value *= INCHES_PER_MM;
     }
 
@@ -910,9 +925,9 @@ stat_t st_set_su(nvObj_t *nv)			// set motor steps per unit (direct)
 
 stat_t st_get_su(nvObj_t *nv)			// set motor steps per unit (direct)
 {
-    int8_t m = nv_get_integer_from_token(nv->index) -1; // subtract 1 to make it an array offset
+//    int8_t m = nv_get_integer_from_token(nv->index) -1; // subtract 1 to make it an array offset
 
-    if ((_axis_is_linear(m)) && (cm_get_units_mode(MODEL) == INCHES)) {
+    if ((st_axis_is_linear(nv)) && (cm_get_units_mode(MODEL) == INCHES)) {
         nv->value *= INCHES_PER_MM;
     }
     return (get_flt(nv));

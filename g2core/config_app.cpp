@@ -200,7 +200,7 @@ const cfgItem_t cfgArray[] = {
     { "1","1sa",_fip, 3, st_print_sa, get_flt, st_set_sa,   (float *)&st_cfg.mot[MOTOR_1].step_angle,     M1_STEP_ANGLE },
     { "1","1tr",_fipc,4, st_print_tr, get_flt, st_set_tr,   (float *)&st_cfg.mot[MOTOR_1].travel_rev,     M1_TRAVEL_PER_REV },
     { "1","1mi",_fip, 0, st_print_mi, get_ui8, st_set_mi,   (float *)&st_cfg.mot[MOTOR_1].microsteps,     M1_MICROSTEPS },
-    { "1","1su",_fipi,5, st_print_su, st_get_su, st_set_su, (float *)&st_cfg.mot[MOTOR_1].steps_per_unit, M1_STEPS_PER_UNIT },
+    { "1","1su",_fips,5, st_print_su, st_get_su, st_set_su, (float *)&st_cfg.mot[MOTOR_1].steps_per_unit, M1_STEPS_PER_UNIT },
     { "1","1po",_fip, 0, st_print_po, get_ui8, set_01,      (float *)&st_cfg.mot[MOTOR_1].polarity,       M1_POLARITY },
     { "1","1ep",_fip, 0, st_print_ep, st_get_ep, st_set_ep, (float *)&cs.null,                            M1_ENABLE_POLARITY },
     { "1","1pm",_fip, 0, st_print_pm, st_get_pm, st_set_pm, (float *)&cs.null,                            M1_POWER_MODE },
@@ -212,7 +212,7 @@ const cfgItem_t cfgArray[] = {
     { "2","2sa",_fip, 3, st_print_sa, get_flt, st_set_sa,   (float *)&st_cfg.mot[MOTOR_2].step_angle,     M2_STEP_ANGLE },
     { "2","2tr",_fipc,4, st_print_tr, get_flt, st_set_tr,   (float *)&st_cfg.mot[MOTOR_2].travel_rev,     M2_TRAVEL_PER_REV },
     { "2","2mi",_fip, 0, st_print_mi, get_ui8, st_set_mi,   (float *)&st_cfg.mot[MOTOR_2].microsteps,     M2_MICROSTEPS },
-    { "2","2su",_fipi,5, st_print_su, st_get_su, st_set_su, (float *)&st_cfg.mot[MOTOR_2].steps_per_unit, M2_STEPS_PER_UNIT },
+    { "2","2su",_fips,5, st_print_su, st_get_su, st_set_su, (float *)&st_cfg.mot[MOTOR_2].steps_per_unit, M2_STEPS_PER_UNIT },
     { "2","2po",_fip, 0, st_print_po, get_ui8, set_01,      (float *)&st_cfg.mot[MOTOR_2].polarity,       M2_POLARITY },
     { "2","2ep",_fip, 0, st_print_ep, st_get_ep, st_set_ep, (float *)&cs.null,                            M2_ENABLE_POLARITY },
     { "2","2pm",_fip, 0, st_print_pm, st_get_pm, st_set_pm, (float *)&cs.null,                            M2_POWER_MODE },
@@ -225,7 +225,7 @@ const cfgItem_t cfgArray[] = {
     { "3","3sa",_fip, 3, st_print_sa, get_flt, st_set_sa,   (float *)&st_cfg.mot[MOTOR_3].step_angle,     M3_STEP_ANGLE },
     { "3","3tr",_fipc,4, st_print_tr, get_flt, st_set_tr,   (float *)&st_cfg.mot[MOTOR_3].travel_rev,     M3_TRAVEL_PER_REV },
     { "3","3mi",_fip, 0, st_print_mi, get_ui8, st_set_mi,   (float *)&st_cfg.mot[MOTOR_3].microsteps,     M3_MICROSTEPS },
-    { "3","3su",_fipi,5, st_print_su, st_get_su, st_set_su, (float *)&st_cfg.mot[MOTOR_3].steps_per_unit, M3_STEPS_PER_UNIT },
+    { "3","3su",_fips,5, st_print_su, st_get_su, st_set_su, (float *)&st_cfg.mot[MOTOR_3].steps_per_unit, M3_STEPS_PER_UNIT },
     { "3","3po",_fip, 0, st_print_po, get_ui8, set_01,      (float *)&st_cfg.mot[MOTOR_3].polarity,       M3_POLARITY },
     { "3","3ep",_fip, 0, st_print_ep, st_get_ep, st_set_ep, (float *)&cs.null,                            M3_ENABLE_POLARITY },
     { "3","3pm",_fip, 0, st_print_pm, st_get_pm, st_set_pm, (float *)&cs.null,                            M3_POWER_MODE },
@@ -238,7 +238,8 @@ const cfgItem_t cfgArray[] = {
     { "4","4sa",_fip, 3, st_print_sa, get_flt, st_set_sa,   (float *)&st_cfg.mot[MOTOR_4].step_angle,     M4_STEP_ANGLE },
     { "4","4tr",_fipc,4, st_print_tr, get_flt, st_set_tr,   (float *)&st_cfg.mot[MOTOR_4].travel_rev,     M4_TRAVEL_PER_REV },
     { "4","4mi",_fip, 0, st_print_mi, get_ui8, st_set_mi,   (float *)&st_cfg.mot[MOTOR_4].microsteps,     M4_MICROSTEPS },
-    { "4","4su",_fipi,5, st_print_su, st_get_su, st_set_su, (float *)&st_cfg.mot[MOTOR_4].steps_per_unit, M4_STEPS_PER_UNIT },
+//    { "4","4su",_fipi,5, st_print_su, st_get_su, st_set_su, (float *)&st_cfg.mot[MOTOR_4].steps_per_unit, M4_STEPS_PER_UNIT },
+    { "4","4su",_fips,5, st_print_su, st_get_su, st_set_su, (float *)&st_cfg.mot[MOTOR_4].steps_per_unit, M4_STEPS_PER_UNIT },
     { "4","4po",_fip, 0, st_print_po, get_ui8, set_01,      (float *)&st_cfg.mot[MOTOR_4].polarity,       M4_POLARITY },
     { "4","4ep",_fip, 0, st_print_ep, st_get_ep, st_set_ep, (float *)&cs.null,                            M4_ENABLE_POLARITY },
     { "4","4pm",_fip, 0, st_print_pm, st_get_pm, st_set_pm, (float *)&cs.null,                            M4_POWER_MODE },
@@ -996,34 +997,24 @@ stat_t set_flu(nvObj_t *nv)
     return(STAT_OK);
 }
 
-/*
- * preprocess_float() - pre-process floating point number for units display
- */
-/*
 void preprocess_float(nvObj_t *nv)
 {
     if (isnan((double)nv->value) || isinf((double)nv->value)) return; // illegal float values
+
+    if (GET_TABLE_BYTE(flags) & F_SU_SPECIAL) {  // special handling for SU
+        if (cm_get_units_mode(MODEL) == INCHES) {
+            if (st_axis_is_linear(nv)) {
+                nv->value *= MM_PER_INCH;
+            }
+        }
+        return;
+    }
+
     if (GET_TABLE_BYTE(flags) & F_CONVERT) {    // unit conversion required?
         if (cm_get_units_mode(MODEL) == INCHES) {
             nv->value *= INCHES_PER_MM;
         }
     }
-}
-*/
-void preprocess_float(nvObj_t *nv)
-{
-    uint8_t f;
-    if (isnan((double)nv->value) || isinf((double)nv->value)) return; // illegal float values
-    f = GET_TABLE_BYTE(flags);
-    if (f & (F_CONVERT | F_ICONVERT)) {		// unit conversion required?
-        if (cm_get_units_mode(MODEL) == INCHES) {
-            if(f & F_ICONVERT) {
-                nv->value *= MM_PER_INCH;
- 			} else {
- 				nv->value *= INCHES_PER_MM;
-			}
- 		}
- 	}
 }
 
 /*

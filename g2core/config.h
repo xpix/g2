@@ -222,7 +222,7 @@ typedef enum {                          // value typing for config and JSON
 #define F_PERSIST       0x02            // persist this item when set is run
 #define F_NOSTRIP       0x04            // do not strip the group prefix from the token
 #define F_CONVERT       0x08            // set if unit conversion is required
-#define F_ICONVERT      0x10            // set if unit conversion is required AND value is an inverse quantity
+#define F_SU_SPECIAL    0x10            // SU is handled as a special
 
 #define _f0             0x00
 #define _fi             (F_INITIALIZE)
@@ -233,7 +233,7 @@ typedef enum {                          // value typing for config and JSON
 #define _fip            (F_INITIALIZE | F_PERSIST)
 #define _fipc           (F_INITIALIZE | F_PERSIST | F_CONVERT)
 #define _fipn           (F_INITIALIZE | F_PERSIST | F_NOSTRIP)
-#define _fipi           (F_INITIALIZE | F_PERSIST | F_ICONVERT)
+#define _fips           (F_INITIALIZE | F_PERSIST | F_SU_SPECIAL)
 #define _fipnc          (F_INITIALIZE | F_PERSIST | F_NOSTRIP | F_CONVERT)
 
 /**** Structures ****/

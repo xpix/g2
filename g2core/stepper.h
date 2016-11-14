@@ -577,6 +577,8 @@ void st_request_out_of_band_dwell(float microseconds);
 //stat_t st_prep_line(float travel_steps[], float following_error[], float segment_time);
 stat_t st_prep_line(float travel_steps[], float following_error[], float segment_time);
 
+uint8_t st_axis_is_linear(nvObj_t *nv);
+
 stat_t st_set_ma(nvObj_t *nv);
 stat_t st_set_sa(nvObj_t *nv);
 stat_t st_set_tr(nvObj_t *nv);
