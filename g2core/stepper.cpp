@@ -884,29 +884,26 @@ stat_t st_set_mi(nvObj_t *nv)            // motor microsteps
  * st_set_su() - set motor steps per unit (direct)
  * st_get_su() - set motor steps per unit (direct)
  *
+ * When SU is set it interacts with SA, MI and TR values. TR is scaled so all these values 
+ * stay in sync. You could scale any one of the other values, but TR makes the most sense.
  *
+ * In addition to real SU values, this function accepts a zero or negative value. If found, 
+ * it just calculates based on SA, MI, and TR and returns the result. This way if you set 
+ * STEPS_PER_UNIT to default to 0 it is unused and you will receive the computed value.
+ *
+ * Units conversion is handled specially for SU. Do the unit conversion here (rather than using 
+ * set_flu) because it's a reciprocal value. The getter and proprocess_float() functions are 
+ * aware of which motors are mapped to which axes, and take that into account.
  */
-#pragma GCC push_options
-#pragma GCC optimize ("O0")
 
-stat_t st_set_su(nvObj_t *nv)			// set motor steps per unit (direct)
+stat_t st_set_su(nvObj_t *nv)
 {
     int8_t m = nv_get_integer_from_token(nv->index) -1; // subtract 1 to make it an array offset
 
-    // Do the unit conversion here (rather than using set_flu) because it's a reciprocal value
     if ((st_axis_is_linear(nv)) && (cm_get_units_mode(MODEL) == INCHES)) {
         nv->value *= INCHES_PER_MM;
     }
-
-//    // Do the unit conversion here (rather than using set_flu) because it's a reciprocal value
-//    // NOTE: This code assumes motors are mapped 123 to XYZ
-//    if ((m <= 3) && (cm_get_units_mode(MODEL) == INCHES)) {
-//        nv->value *= INCHES_PER_MM;
-//    }
-
     if(nv->value <= 0) {
-        // Don't set a zero or negative value - just calculate based on sa,tr,mi
-        // This way, if we set the STEPS_PER_UNIT to default to 0, it is unused and we get the computed value
         _set_motor_steps_per_unit(nv);
         nv->value = st_cfg.mot[m].steps_per_unit;   // return the actual value
         nv->precision = GET_TABLE_WORD(precision);
@@ -915,25 +912,18 @@ stat_t st_set_su(nvObj_t *nv)			// set motor steps per unit (direct)
     }
     set_flt(nv);
     st_cfg.mot[m].units_per_step = 1.0/st_cfg.mot[m].steps_per_unit;
-
     // Scale TR so all the other values make sense
-    // You could scale any one of the other values, but TR makes the most sense
     st_cfg.mot[m].travel_rev = (360.0*st_cfg.mot[m].microsteps)/(st_cfg.mot[m].steps_per_unit*st_cfg.mot[m].step_angle);
-
     return(STAT_OK);
 }
 
-stat_t st_get_su(nvObj_t *nv)			// set motor steps per unit (direct)
+stat_t st_get_su(nvObj_t *nv)
 {
-//    int8_t m = nv_get_integer_from_token(nv->index) -1; // subtract 1 to make it an array offset
-
     if ((st_axis_is_linear(nv)) && (cm_get_units_mode(MODEL) == INCHES)) {
         nv->value *= INCHES_PER_MM;
     }
     return (get_flt(nv));
 }
-
-#pragma GCC reset_options
 
 /*
  * st_set_ep() - set motor enable polarity
