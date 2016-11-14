@@ -315,6 +315,7 @@ bool nv_index_is_single(index_t index); // (see config_app.c)
 bool nv_index_is_group(index_t index);  // (see config_app.c)
 bool nv_index_lt_groups(index_t index); // (see config_app.c)
 bool nv_group_is_prefixed(char *group);
+int8_t nv_get_integer_from_token(index_t index);
 
 // generic internal functions and accessors
 stat_t set_nul(nvObj_t *nv);            // set nothing, return null value and STAT_OK

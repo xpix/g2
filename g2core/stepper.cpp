@@ -786,22 +786,7 @@ static void _set_hw_microsteps(const uint8_t motor, const uint8_t microsteps)
  * Functions to get and set variables from the cfgArray table
  ***********************************************************************************/
 
-/* HELPERS
- * _get_motor() - helper to return motor number as an index or -1 if na
- */
-
-static int8_t _get_motor(const index_t index)
-{
-    char *ptr;
-    char motors[] = {"123456"};
-    char tmp[GROUP_LEN+1];
-
-    strcpy(tmp, cfgArray[index].group);
-    if ((ptr = strchr(motors, tmp[0])) == NULL) {
-        return (-1);
-    }
-    return (ptr - motors);
-}
+/* HELPERS */
 
 /*
  * _set_motor_steps_per_unit() - what it says
@@ -810,7 +795,7 @@ static int8_t _get_motor(const index_t index)
 
 static void _set_motor_steps_per_unit(nvObj_t *nv)
 {
-    uint8_t m = _get_motor(nv->index);
+    int8_t m = nv_get_integer_from_token(nv->index) -1; // subtract 1 to make it an array offset
     st_cfg.mot[m].units_per_step = (st_cfg.mot[m].travel_rev * st_cfg.mot[m].step_angle) / (360 * st_cfg.mot[m].microsteps);
     st_cfg.mot[m].steps_per_unit = 1/st_cfg.mot[m].units_per_step;
 }
@@ -819,15 +804,7 @@ static void _set_motor_steps_per_unit(nvObj_t *nv)
  * st_set_ma() - set motor map to axis
  * st_set_sa() - set motor step angle
  * st_set_tr() - set travel per motor revolution
- * st_set_mi() - set motor microsteps
- * st_set_su() - set motor steps per unit (direct)
- *
- * st_set_ep() - set motor enable polarity
- * st_get_ep() - get motor enable polarity
- *
- * st_set_pm() - set motor power mode
- * st_get_pm() - get motor power mode
- * st_set_pl() - set motor power level
+ * st_set_mi() - set motor microsteps 
  */
 
 stat_t st_set_ma(nvObj_t *nv)            // motor map to axis
@@ -869,32 +846,61 @@ stat_t st_set_mi(nvObj_t *nv)            // motor microsteps
         return (STAT_INPUT_LESS_THAN_MIN_VALUE);
     }
     uint8_t mi = (uint8_t)nv->value;
+    int8_t motor = nv_get_integer_from_token(nv->index) -1; // subtract 1 to make it an array offset
 
     if ((mi != 1) && (mi != 2) && (mi != 4) && (mi != 8) && (mi != 16) && (mi != 32)) {
         nv_add_conditional_message((const char *)"*** WARNING *** Setting non-standard microstep value");
     }
     set_ui8(nv);                        // set it anyway, even if it's unsupported
     _set_motor_steps_per_unit(nv);
-    _set_hw_microsteps(_get_motor(nv->index), (uint8_t)nv->value);
+    _set_hw_microsteps(motor, (uint8_t)nv->value);
     return (STAT_OK);
+}
+
+/*
+ * st_set_su() - set motor steps per unit (direct)
+ * st_get_su() - set motor steps per unit (direct)
+ *
+ *
+ */
+#pragma GCC push_options
+#pragma GCC optimize ("O0")
+
+uint8_t _axis_is_linear(const uint8_t motor)
+{
+    if (st_cfg.mot[motor].motor_map <= AXIS_Z) {
+        return (true);
+    }
+    return (false);
 }
 
 stat_t st_set_su(nvObj_t *nv)			// set motor steps per unit (direct)
 {
-    uint8_t m = _get_motor(nv->index);
+    int8_t m = nv_get_integer_from_token(nv->index) -1; // subtract 1 to make it an array offset
+
     // Do the unit conversion here (rather than using set_flu) because it's a reciprocal value
-    if ((m <= 3) && (cm_get_units_mode(MODEL) == INCHES)) {
+    if ((_axis_is_linear(m)) && (cm_get_units_mode(MODEL) == INCHES)) {
         nv->value *= INCHES_PER_MM;
     }
+
+//    // Do the unit conversion here (rather than using set_flu) because it's a reciprocal value
+//    // NOTE: This code assumes motors are mapped 123 to XYZ
+//    if ((m <= 3) && (cm_get_units_mode(MODEL) == INCHES)) {
+//        nv->value *= INCHES_PER_MM;
+//    }
 
     if(nv->value <= 0) {
         // Don't set a zero or negative value - just calculate based on sa,tr,mi
         // This way, if we set the STEPS_PER_UNIT to default to 0, it is unused and we get the computed value
         _set_motor_steps_per_unit(nv);
+        nv->value = st_cfg.mot[m].steps_per_unit;   // return the actual value
+        nv->precision = GET_TABLE_WORD(precision);
+        nv->valuetype = TYPE_FLOAT;
         return(STAT_OK);
     }
     set_flt(nv);
     st_cfg.mot[m].units_per_step = 1.0/st_cfg.mot[m].steps_per_unit;
+
     // Scale TR so all the other values make sense
     // You could scale any one of the other values, but TR makes the most sense
     st_cfg.mot[m].travel_rev = (360.0*st_cfg.mot[m].microsteps)/(st_cfg.mot[m].steps_per_unit*st_cfg.mot[m].step_angle);
@@ -902,16 +908,31 @@ stat_t st_set_su(nvObj_t *nv)			// set motor steps per unit (direct)
     return(STAT_OK);
 }
 
+stat_t st_get_su(nvObj_t *nv)			// set motor steps per unit (direct)
+{
+    int8_t m = nv_get_integer_from_token(nv->index) -1; // subtract 1 to make it an array offset
+
+    if ((_axis_is_linear(m)) && (cm_get_units_mode(MODEL) == INCHES)) {
+        nv->value *= INCHES_PER_MM;
+    }
+    return (get_flt(nv));
+}
+
+#pragma GCC reset_options
+
+/*
+ * st_set_ep() - set motor enable polarity
+ * st_get_ep() - get motor enable polarity
+ */
+
 stat_t st_set_ep(nvObj_t *nv)            // set motor enable polarity
 {
     if ((nv->value < ACTIVE_HIGH) || (nv->value > ACTIVE_LOW)) {
         nv->valuetype = TYPE_NULL;
         return (STAT_INPUT_VALUE_RANGE_ERROR);
     }
-    uint8_t motor = _get_motor(nv->index);
-    if (motor > MOTORS) { return STAT_INPUT_VALUE_RANGE_ERROR; };
-
-    Motors[motor]->_motor_enable_polarity = (uint8_t)nv->value;
+    int8_t m = nv_get_integer_from_token(nv->index) -1; // subtract 1 to make it an array offset
+    Motors[m]->_motor_enable_polarity = (uint8_t)nv->value;
     return (STAT_OK);
 }
 
@@ -921,13 +942,16 @@ stat_t st_get_ep(nvObj_t *nv)            // get motor enable polarity
         nv->valuetype = TYPE_NULL;
         return (STAT_INPUT_VALUE_RANGE_ERROR);
     }
-    uint8_t motor = _get_motor(nv->index);
-    if (motor > MOTORS) { return STAT_INPUT_VALUE_RANGE_ERROR; };
-
-    nv->value = (float)Motors[motor]->_motor_enable_polarity;
+    int8_t m = nv_get_integer_from_token(nv->index) -1; // subtract 1 to make it an array offset
+    nv->value = (float)Motors[m]->_motor_enable_polarity;
     nv->valuetype = TYPE_INT;
     return (STAT_OK);
 }
+
+/*
+ * st_set_pm() - set motor power mode
+ * st_get_pm() - get motor power mode
+ */
 
 stat_t st_set_pm(nvObj_t *nv)            // set motor power mode
 {
@@ -935,10 +959,8 @@ stat_t st_set_pm(nvObj_t *nv)            // set motor power mode
         nv->valuetype = TYPE_NULL;
         return (STAT_INPUT_VALUE_RANGE_ERROR);
     }
-    uint8_t motor = _get_motor(nv->index);
-    if (motor > MOTORS) { return STAT_INPUT_VALUE_RANGE_ERROR; };
-
-    Motors[motor]->setPowerMode((stPowerMode)nv->value);
+    int8_t m = nv_get_integer_from_token(nv->index) -1; // subtract 1 to make it an array offset
+    Motors[m]->setPowerMode((stPowerMode)nv->value);
     // We do this *here* in order for this to take effect immediately.
     // setPowerMode() sets the value and also executes it.
     return (STAT_OK);
@@ -950,10 +972,8 @@ stat_t st_get_pm(nvObj_t *nv)            // get motor power mode
         nv->valuetype = TYPE_NULL;
         return (STAT_INPUT_VALUE_RANGE_ERROR);
     }
-    uint8_t motor = _get_motor(nv->index);
-    if (motor > MOTORS) { return STAT_INPUT_VALUE_RANGE_ERROR; };
-
-    nv->value = (float)Motors[motor]->getPowerMode();
+    int8_t m = nv_get_integer_from_token(nv->index) -1; // subtract 1 to make it an array offset
+    nv->value = (float)Motors[m]->getPowerMode();
     nv->valuetype = TYPE_INT;
     return (STAT_OK);
 }
@@ -973,10 +993,10 @@ stat_t st_set_pl(nvObj_t *nv)    // motor power level
     }
     set_flt(nv);    // set power_setting value in the motor config struct (st)
 
-    uint8_t motor = _get_motor(nv->index);
-    st_cfg.mot[motor].power_level_scaled = (nv->value * POWER_LEVEL_SCALE_FACTOR);
-    st_run.mot[motor].power_level_dynamic = (st_cfg.mot[motor].power_level_scaled);
-    Motors[motor]->setPowerLevel(st_cfg.mot[motor].power_level_scaled);
+    int8_t m = nv_get_integer_from_token(nv->index) -1; // subtract 1 to make it an array offset
+    st_cfg.mot[m].power_level_scaled = (nv->value * POWER_LEVEL_SCALE_FACTOR);
+    st_run.mot[m].power_level_dynamic = (st_cfg.mot[m].power_level_scaled);
+    Motors[m]->setPowerLevel(st_cfg.mot[m].power_level_scaled);
 
     return(STAT_OK);
 }
@@ -990,20 +1010,14 @@ stat_t st_set_pl(nvObj_t *nv)    // motor power level
  */
 stat_t st_get_pwr(nvObj_t *nv)
 {
-    // this is kind of a hack to extract the motor number from the table
-    uint8_t motor = (cfgArray[nv->index].token[3] & 0x0F) - 1;
-    if ((motor < 0) || (motor > MOTORS)) { 
-        nv->valuetype = TYPE_NULL;
-        return STAT_INPUT_VALUE_RANGE_ERROR; 
-    }
-    nv->value = Motors[motor]->getCurrentPowerLevel(motor);
+    int8_t m = nv_get_integer_from_token(nv->index) -1; // subtract 1 to make it an array offset
+    nv->value = Motors[m]->getCurrentPowerLevel(m);
 	nv->valuetype = TYPE_FLOAT;
     nv->precision = cfgArray[nv->index].precision;
 	return (STAT_OK);
 }
 
-/* GLOBAL FUNCTIONS (SYSTEM LEVEL)
- *
+/* GLOBAL MOTOR FUNCTIONS
  * st_set_mt() - set motor timeout in seconds
  * st_set_md() - disable motor power
  * st_set_me() - enable motor power

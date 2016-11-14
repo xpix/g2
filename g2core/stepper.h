@@ -582,6 +582,7 @@ stat_t st_set_sa(nvObj_t *nv);
 stat_t st_set_tr(nvObj_t *nv);
 stat_t st_set_mi(nvObj_t *nv);
 stat_t st_set_su(nvObj_t *nv);
+stat_t st_get_su(nvObj_t *nv);
 stat_t st_set_ep(nvObj_t *nv);
 stat_t st_get_ep(nvObj_t *nv);
 stat_t st_set_pm(nvObj_t *nv);
