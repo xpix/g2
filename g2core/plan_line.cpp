@@ -192,7 +192,8 @@ stat_t mp_aline(GCodeState_t* gm_in)
     // exit if the move has zero movement. At all.
     if (fp_ZERO(length)) {
         sr_request_status_report(SR_REQUEST_TIMED_FULL);  // Was SR_REQUEST_IMMEDIATE_FULL
-        return (STAT_MINIMUM_LENGTH_MOVE);
+//        return (STAT_MINIMUM_LENGTH_MOVE);
+        return (STAT_OK);
     }
 
     // get a cleared buffer and copy in the Gcode model state

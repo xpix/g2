@@ -1,0 +1,15 @@
+{"rxm":0}
+?
+{"ej":""}
+{"js":1}
+{"sr":n}
+{"sv":1}
+{"si":250}
+{"qr":n}
+{"qv":1}
+{"ec":0}
+{"jv":4}
+{"hp":n}
+{"fb":n}
+{"mt":n}
+{"sr":{"line":t,"posx":t,"posy":t,"posz":t,"vel":t,"unit":t,"stat":t,"feed":t,"coor":t,"momo":t,"plan":t,"path":t,"dist":t,"mpox":t,"mpoy":t,"mpoz":t}}
