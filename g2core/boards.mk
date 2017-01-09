@@ -77,6 +77,14 @@ ifeq ("$(CONFIG)","TestQuintic")
     SETTINGS_FILE="settings_test.h"
 endif
 
+# Settings for a CNC3040 on a gQuintic/b Board
+ifeq ("$(CONFIG)","QuinticCNC3040")
+    ifeq ("$(BOARD)","NONE")
+        BOARD=gquintic-b
+    endif
+    SETTINGS_FILE="settings_gquintic-cnc3040.h"
+endif
+
 
 ifeq ("$(CONFIG)","TestQuadratic")
     ifeq ("$(BOARD)","NONE")
