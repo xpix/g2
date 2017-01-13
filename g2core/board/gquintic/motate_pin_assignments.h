@@ -147,9 +147,15 @@ pin_number kInput12_PinNumber = 111;
 // START DEBUG PINS - Convenient pins to hijack for hardware debugging
 // To reuse a pin for debug change the original pin number to -1
 // and uncomment the corresponding debug pin
-pin_number kSpindle_EnablePinNumber = -1;  // 112       // Not implemented Spindle ON implemented in g2ref
-pin_number kSpindle_DirPinNumber    = -1;  // 113       // Not implemented Spindle ON implemented in g2ref
-pin_number kSpindle_PwmPinNumber    = -1;  // 114       // Not implemented (superseded by Extruder1_PWM)
+
+// Spindle outputs for DC-Controller ( i.e. http://www.ebay.com/itm/201602962064 )
+//  kOutput9 = spindle enable       => DO_9
+//  kOutput8 = spindle direction    => DO_8 
+//  kOutput7 = spindle speed        => DO_7
+pin_number kSpindle_EnablePinNumber = 138;  // 112       // Not implemented Spindle ON implemented in g2ref
+pin_number kSpindle_DirPinNumber    = 137;  // 113       // Not implemented Spindle ON implemented in g2ref
+pin_number kSpindle_PwmPinNumber    = 136;  // 114       // Not implemented (superseded by Extruder1_PWM)
+
 pin_number kSpindle_Pwm2PinNumber   = -1;  // 115       // Not implemented (superseded by Fan1B_PWM)
 pin_number kCoolant_EnablePinNumber = -1;  // 116       // Not implemented Spindle ON implemented in g2ref
 
@@ -184,11 +190,12 @@ pin_number kOutput3_PinNumber = 132;  // DO_3: Fan1A_PWM
 pin_number kOutput4_PinNumber = 133;  // DO_4: Fan1B_PWM
 pin_number kOutput5_PinNumber = 134;  // DO_5: Fan2A_PWM
 
-pin_number kOutput6_PinNumber  = 135;  // See Spindle Enable
-pin_number kOutput7_PinNumber  = 136;  // See Spindle Direction
-pin_number kOutput8_PinNumber  = 137;  // See Coolant Enable
-pin_number kOutput9_PinNumber  = 138;  // SAFE signal
-pin_number kOutput10_PinNumber = 139;  // DO_10: Fan2B_PWM
+pin_number kOutput6_PinNumber  = 135;  // 135 // DO_6:See Spindle Enable
+pin_number kOutput7_PinNumber  =  -1;  // 136 // DO_7:See Spindle Direction
+pin_number kOutput8_PinNumber  =  -1;  // 137 // DO_8:See Coolant Enable
+pin_number kOutput9_PinNumber  =  -1;  // 138 // DO_9:SAFE signal
+
+pin_number kOutput10_PinNumber = 139;  // 139 // DO_10: Fan2B_PWM
 
 pin_number kOutput11_PinNumber = 140;  // DO_11: Heated Bed FET
 pin_number kOutput12_PinNumber = 141;  // DO_12: Indicator_LED

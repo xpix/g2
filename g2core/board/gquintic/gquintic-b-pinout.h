@@ -130,16 +130,27 @@ _MAKE_MOTATE_PIN(kI2C1_SDAPinNumber, 'A', 3);                 //
 _MAKE_MOTATE_PIN(kI2C1_SCLPinNumber, 'A', 4);                 //
 _MAKE_MOTATE_PIN(kOutput11_PinNumber, 'A', 5);                       //
 _MAKE_MOTATE_PIN(kExternalClock1_PinNumber, 'A', 6);          // CPU_CLK
-_MAKE_MOTATE_PIN(kOutput7_PinNumber, 'A', 7);                        //
 _MAKE_MOTATE_PIN(kSerial_RTSPinNumber, 'A', 8);                       //
 _MAKE_MOTATE_PIN(kSerial_RXPinNumber, 'A', 9);                         //
 _MAKE_MOTATE_PIN(kSerial_TXPinNumber, 'A', 10);                        //
 _MAKE_MOTATE_PIN(kSocket2_EnablePinNumber, 'A', 11);  //
 _MAKE_MOTATE_PIN(kOutput6_PinNumber, 'A', 12);               //
-_MAKE_MOTATE_PIN(kOutput8_PinNumber, 'A', 13);               //
 _MAKE_MOTATE_PIN(kSocket1_StepPinNumber, 'A', 14);                //
 _MAKE_MOTATE_PIN(kOutput3_PinNumber, 'A', 15);                //
 _MAKE_MOTATE_PIN(kOutput4_PinNumber, 'A', 16);                //
+
+// Spindle outputs for DC-Controller ( i.e. http://www.ebay.com/itm/201602962064 )
+//  kOutput9 = spindle enable       => DO_9
+//  kOutput8 = spindle direction    => DO_8 
+//  kOutput7 = spindle speed        => DO_7
+//_MAKE_MOTATE_PIN(kOutput7_PinNumber, 'A', 7);                        //
+//_MAKE_MOTATE_PIN(kOutput8_PinNumber, 'A', 13);               //
+//_MAKE_MOTATE_PIN(kOutput9_PinNumber, 'D', 26);    //
+_MAKE_MOTATE_PIN(kSpindle_PwmPinNumber,     'A', 7);     // "DO7" - originally kOutput7_PinNumber
+_MAKE_MOTATE_PIN(kSpindle_DirPinNumber,     'A', 13);    // "DO8" - originally kOutput8_PinNumber
+_MAKE_MOTATE_PIN(kSpindle_EnablePinNumber,  'D', 26);    // "DO9" - originally kOutput9_PinNumber
+
+
 _MAKE_MOTATE_PIN(kADC3_PinNumber, 'A', 17);                   //
 _MAKE_MOTATE_PIN(kADC2_PinNumber, 'A', 18);                   //
 _MAKE_MOTATE_PIN(kADC1_PinNumber, 'A', 19);                   //
@@ -199,7 +210,6 @@ _MAKE_MOTATE_PIN(kSPI0_SCKPinNumber, 'D', 22);              //
 _MAKE_MOTATE_PIN(kUnassigned7, 'D', 23);        //
 _MAKE_MOTATE_PIN(kSocket2_StepPinNumber, 'D', 24);  //
 _MAKE_MOTATE_PIN(kSocket2_SPISlaveSelectPinNumber, 'D', 25);     //
-_MAKE_MOTATE_PIN(kOutput9_PinNumber, 'D', 26);    //
 _MAKE_MOTATE_PIN(kSocket1_DirPinNumber, 'D', 27);  //
 _MAKE_MOTATE_PIN(kSocket4_EnablePinNumber, 'D', 28);    //
 _MAKE_MOTATE_PIN(kUnassigned8, 'D', 29);       //

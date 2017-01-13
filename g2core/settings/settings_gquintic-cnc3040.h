@@ -61,6 +61,9 @@
 #define STATUS_REPORT_MIN_MS        100                     // milliseconds - enforces a viable minimum
 #define STATUS_REPORT_INTERVAL_MS   250                     // milliseconds - set $SV=0 to disable
 
+
+// TODO: check status reports from CP
+
 //#define STATUS_REPORT_DEFAULTS "line","posx","posy","posz","posa","bcr","feed","vel","unit","coor","dist","admo","frmo","momo","stat"
 #define STATUS_REPORT_DEFAULTS "line","posx","posy","posz","bcr","feed","vel","momo","stat"
 
