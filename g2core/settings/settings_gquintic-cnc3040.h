@@ -365,7 +365,7 @@ Used for new DC-Controller http://www.ebay.de/itm/192021316907
 #define P1_CCW_SPEED_LO             1000
 #define P1_CCW_SPEED_HI             12000
 #define P1_CCW_PHASE_LO             0.125
-#define P1_CCW_PHASE_HI             0.200
+#define P1_CCW_PHASE_HI             0.950
 #define P1_PWM_PHASE_OFF            0.000
 
 // *** DEFAULT COORDINATE SYSTEM OFFSETS ***
