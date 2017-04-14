@@ -162,5 +162,15 @@ ifeq ("$(CONFIG)","AxiDrawv3")
 endif
 
 
+##########
+# CNC3040 configs:
+ifeq ("$(CONFIG)","CNC3040")
+    ifeq ("$(BOARD)","NONE")
+        BOARD=gquintic-b
+    endif
+    SETTINGS_FILE="settings_cnc3040.h"
+endif
+
+
 include $(wildcard ./board/$(STAR).mk)
 
